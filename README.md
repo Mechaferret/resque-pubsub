@@ -11,26 +11,26 @@ Usage / Examples
 
 A simple class that can publish a message:
 
-  class TestPublisher
-    require 'resque-pubsub'
+    class TestPublisher
+      require 'resque-pubsub'
     
-    def some_method
-      self.publish(topic, message)
+      def some_method
+        self.publish(topic, message)
+      end
     end
-  end
 
 
 A simple class that subscribes to messages on a particular topic:
 
-  class TestSubscriber
-    require 'resque-pubsub'
+    class TestSubscriber
+      require 'resque-pubsub'
   
-    subscribe 'test_topic'
+      subscribe 'test_topic'
     
-    def self.read_test_topic_message(message)
-      # Do something with the message
+      def self.read_test_topic_message(message)
+        # Do something with the message
+      end
     end
-  end
 
 
 Customize & Extend

@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency('resque', '>= 1.9.10')
 
-  s.description       = <<desc
-  A Resque plugin. Provides a lightweight publish/subscribe messaging system, with message persistence when clients are down.
-desc
+  s.description       = <<-DESC
+    A Resque plugin. Provides a lightweight publish/subscribe messaging system, with message persistence when clients are down.
+  DESC
 end
