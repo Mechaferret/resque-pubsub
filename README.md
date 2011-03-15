@@ -41,13 +41,8 @@ but can be customized with the option :reader_method, e.g.,
 
     subscribe 'test_topic', :reader_message => :custom_message_method
     
-Note that this hasn't been tested yet.
-
-
 The namespace that pubsub uses in Resque defaults to 'resque:pubsub' but can be configured by setting the constant 
 Resque::Plugins::Pubsub::Exchange::PUBSUB_NAMESPACE.
-
-Note that this hasn't been tested yet either.
 
 
 Install
@@ -59,7 +54,7 @@ Install
 
 ### In a Rails app, as a plugin
 
-    $ rails plugin install git://github.com/mechaferret/resque-pubsub
+    $ rails plugin install git://github.com/Mechaferret/resque-pubsub.git
 
 
 Running Resque
@@ -68,13 +63,13 @@ Running Resque
 A sample config file is provided in examples/resque-pubsub.rb. If you put this in config/initializers for a Rails app,
 then Resque will default to the app namespace but will take an override on namespace from the environment variable RESQUE_NAMESPACE. Thus
 
-QUEUE=* RESQUE_NAMESPACE="resque:pubsub" rake environment resque:work
+  QUEUE=* RESQUE_NAMESPACE="resque:pubsub" rake environment resque:work
 
 will run resque jobs against the default pubsub namespace (i.e., will be the pubsub server)
 
 while 
 
-QUEUE=* rake environment resque:work
+  QUEUE=* rake environment resque:work
 
 will run resque in an app as normal.
 

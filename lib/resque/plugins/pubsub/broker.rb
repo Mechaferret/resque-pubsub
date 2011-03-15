@@ -17,7 +17,6 @@ module Resque
         end
         
         def self.perform(topic, message)
-          puts "broker distributing #{message} for #{topic}"
           subscribers = Exchange.redis.smembers("#{topic}_subscribers")
           subscribers.each {|s|
             sinfo = JSON.parse(s)

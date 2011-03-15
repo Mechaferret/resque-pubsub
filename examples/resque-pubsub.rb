@@ -9,4 +9,4 @@ Resque.redis = REDIS_CONFIG["host"] + ':' + REDIS_CONFIG["port"].to_s
 namespace = ENV['RESQUE_NAMESPACE'] || 'mynamespace' # Edit this to use a different namespace for Resque in the app
 Resque.redis.namespace = namespace
 require "#{rails_root}/vendor/plugins/resque-pubsub/lib/resque/plugins/pubsub/exchange.rb"
-Resque::Plugins::Pubsub::Exchange::PUBSUB_NAMESPACE = 'resque:pubsub' # Edit this to use a different namespace for pubsub
+Resque::Plugins::Pubsub::Exchange.pubsub_namespace = 'resque:pubsub' # Edit this to use a different namespace for pubsub
