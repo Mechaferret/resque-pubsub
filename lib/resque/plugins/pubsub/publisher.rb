@@ -6,8 +6,7 @@ module Resque
     #
     module Pubsub
       module Publisher
-      	def self.included(base)
-      	  puts 'including publisher'
+        def self.included(base)
           base.send(:include, InstanceMethods)
         end
 

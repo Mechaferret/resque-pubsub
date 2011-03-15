@@ -6,10 +6,10 @@ module Resque
     #
     module Pubsub
       module Subscriber
-      	def self.included(base)
+        def self.included(base)
           base.extend ClassMethods
         end
-      
+
         module ClassMethods
           def subscribe(topic, options={})
             @queue = "fanout:#{topic}"
@@ -17,7 +17,7 @@ module Resque
             module_eval <<-"end_eval"
               def self.perform(message)
                 self.send("#{reader_method}", message)
-      				end
+              end
             end_eval
             options[:namespace] = Resque.redis.namespace
             options[:topic] = topic
@@ -26,7 +26,7 @@ module Resque
             Exchange.redis.sadd(:queues, :subscription_requests)
             Exchange.redis.rpush("queue:subscription_requests", {:class=>'Resque::Plugins::Pubsub::Exchange', :args=>[options]}.to_json)      
           end
-          
+
         end
       end
     end
