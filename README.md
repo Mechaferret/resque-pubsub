@@ -63,13 +63,13 @@ Running Resque
 A sample config file is provided in examples/resque-pubsub.rb. If you put this in config/initializers for a Rails app,
 then Resque will default to the app namespace but will take an override on namespace from the environment variable RESQUE_NAMESPACE. Thus
 
-  QUEUE=* RESQUE_NAMESPACE="resque:pubsub" rake environment resque:work
+    QUEUE=* RESQUE_NAMESPACE="resque:pubsub" rake environment resque:work
 
 will run resque jobs against the default pubsub namespace (i.e., will be the pubsub server)
 
 while 
 
-  QUEUE=* rake environment resque:work
+    QUEUE=* rake environment resque:work
 
 will run resque in an app as normal.
 
