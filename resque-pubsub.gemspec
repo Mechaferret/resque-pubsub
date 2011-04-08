@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name              = 'resque-pubsub'
-  s.version           = '0.1.1'
+  s.version           = '0.1.2'
   s.date              = Time.now.strftime('%Y-%m-%d')
   s.summary           = 'A Resque plugin that provides a lightweight publish/subscribe messaging system.'
   s.homepage          = 'http://github.com/mechaferret/resque-pubsub'
@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.has_rdoc          = false
 
   s.files             = %w(README.md Rakefile MIT-LICENSE HISTORY.md)
+  s.files            += Dir.glob('examples/**/*')
   s.files            += Dir.glob('lib/**/*')
   s.files            += Dir.glob('test/**/*')
 
