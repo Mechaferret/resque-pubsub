@@ -1,11 +1,9 @@
 require 'resque/plugins/pubsub/exchange'
 module Resque
   module Plugins
-    #
-    # pubsub subscriber
-    #
     module Pubsub
       module Subscriber
+
         def self.included(base)
           base.extend ClassMethods
         end
@@ -24,10 +22,10 @@ module Resque
             options[:class] = self.to_s
             puts "Subscriber subscribing with #{options.inspect}"
             Exchange.redis.sadd(:queues, :subscription_requests)
-            Exchange.redis.rpush("queue:subscription_requests", {:class=>'Resque::Plugins::Pubsub::Exchange', :args=>[options]}.to_json)      
+            Exchange.redis.rpush("queue:subscription_requests", { :class => 'Resque::Plugins::Pubsub::Exchange', :args => [options] }.to_json)      
           end
-
         end
+
       end
     end
   end
