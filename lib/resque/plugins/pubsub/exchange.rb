@@ -2,10 +2,6 @@ module Resque
   module Plugins
     module Pubsub
       class Exchange
-
-        @@pubsub_namespace = nil
-        # Returns the current Redis connection. If none has been created, will
-        # create a new one using information from the Resque connection and our config.
         
         @queue = :subscription_requests
 
@@ -15,8 +11,8 @@ module Resque
             return @redis if @redis
             client_to_copy = Resque.redis.client
             redis_new = Redis.new(:host => client_to_copy.host, :port => client_to_copy.port, :thread_safe => true, :db => client_to_copy.db)
-            puts "[Exchange] making a redis in exchange, namespace will be #{@@pubsub_namespace}"
-            @redis = Redis::Namespace.new(@@pubsub_namespace || 'resque:pubsub', :redis => redis_new)
+            puts "[Exchange] making a redis in exchange, namespace will be #{@pubsub_namespace}"
+            @redis = Redis::Namespace.new(@pubsub_namespace || 'resque:pubsub', :redis => redis_new)
           end
 
           def perform(subscription_info)
@@ -27,11 +23,11 @@ module Resque
           end
 
           def pubsub_namespace
-            @@pubsub_namespace
+            @pubsub_namespace
           end
 
           def pubsub_namespace=(namespace)
-            @@pubsub_namespace = namespace
+            @pubsub_namespace = namespace
             @redis.client.disconnect if @redis
             @redis = nil
           end
