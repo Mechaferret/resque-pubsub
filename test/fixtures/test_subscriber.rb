@@ -3,15 +3,17 @@ class TestSubscriber
 
   subscribe 'test_topic'
 
-  @@last_message = nil
+  class << self
 
-  def self.read_test_topic_message(message)
-    puts "[#{self.to_s}] got test topic message: #{message.inspect}"
-    @@last_message = message
-  end
+    def read_test_topic_message(message)
+      puts "[#{self.to_s}] got test topic message: #{message.inspect}"
+      @last_message = message
+    end
 
-  def self.last_message
-    @@last_message
+    def last_message
+      @last_message
+    end
+
   end
 
 end
