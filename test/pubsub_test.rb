@@ -1,6 +1,7 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 class PubsubTest < Test::Unit::TestCase
+
   def setup
     $success = $lock_failed = $lock_expired = 0
     Resque.redis.flushall
@@ -12,7 +13,7 @@ class PubsubTest < Test::Unit::TestCase
       Resque::Plugin.lint(Resque::Plugins::Pubsub)
     end
   end
-  
+
   def test_all
     # Just loading the "TestSubscriber" class is enough to subscribe
     require 'test_publisher'
@@ -22,7 +23,7 @@ class PubsubTest < Test::Unit::TestCase
     @worker = Resque::Worker.new(:subscription_requests)
     @worker.process
     # Check that the subscription is in the subscribers list
-    assert check_subscription(Resque.redis.smembers("test_topic_subscribers"), "TestSubscriber", "test_pubsub")
+    assert subscription_exists(Resque.redis.smembers("test_topic_subscribers"), "TestSubscriber", "test_pubsub")
     p = TestPublisher.new
     p.publish("test_topic", "Test message")
     # Run Resque for the broker
@@ -32,14 +33,14 @@ class PubsubTest < Test::Unit::TestCase
     # Check that the message queue has been populated
     Resque.redis.namespace = 'test_pubsub'
     assert Resque.redis.keys.include?('queue:fanout:test_topic')
-    assert Resque.redis.llen('queue:fanout:test_topic')==1
+    assert Resque.redis.llen('queue:fanout:test_topic') == 1
     # Now run the subscriber Resque
     @worker = Resque::Worker.new('fanout:test_topic')
     @worker.process
-    assert Resque.redis.llen('fanout:test_topic')==0
-    assert TestSubscriber.last_message=='Test message'
+    assert Resque.redis.llen('fanout:test_topic') == 0
+    assert TestSubscriber.last_message == 'Test message'
   end
-  
+
   def test_configuration_options
     # Configure the pubsub namespace
     require 'resque-pubsub'
@@ -53,7 +54,7 @@ class PubsubTest < Test::Unit::TestCase
     @worker = Resque::Worker.new(:subscription_requests)
     @worker.process
     # Check that the subscription is in the subscribers list
-    assert check_subscription(Resque.redis.smembers("test_custom_topic_subscribers"), "TestSubscriberCustom", "test_pubsub")
+    assert subscription_exists(Resque.redis.smembers("test_custom_topic_subscribers"), "TestSubscriberCustom", "test_pubsub")
     p = TestPublisher.new
     p.publish("test_custom_topic", "Test custom message")
     # Run Resque for the broker
@@ -63,21 +64,23 @@ class PubsubTest < Test::Unit::TestCase
     # Check that the message queue has been populated
     Resque.redis.namespace = 'test_pubsub'
     assert Resque.redis.keys.include?('queue:fanout:test_custom_topic')
-    assert Resque.redis.llen('queue:fanout:test_custom_topic')==1
+    assert Resque.redis.llen('queue:fanout:test_custom_topic') == 1
     # Now run the subscriber Resque
     @worker = Resque::Worker.new('fanout:test_custom_topic')
     @worker.process
-    assert Resque.redis.llen('fanout:test_custom_topic')==0
-    assert TestSubscriberCustom.last_message=='Test custom message'
+    assert Resque.redis.llen('fanout:test_custom_topic') == 0
+    assert TestSubscriberCustom.last_message == 'Test custom message'
     # Also make sure TestSubscriber DIDN'T get the message
-    assert TestSubscriber.last_message!='Test custom message'
+    assert TestSubscriber.last_message != 'Test custom message'
   end
+
+  private
   
-  def check_subscription(subscribers, klass, namespace)
-    subscribers.inject(false) {|result, s|
+  def subscription_exists(subscribers, klass, namespace)
+    subscribers.inject(false) do |result, s|
       sinfo = JSON.parse(s)
-      result = result || (sinfo["class"]==klass && sinfo['namespace']==namespace)
-    }
+      result = result || (sinfo["class"] == klass && sinfo['namespace'] == namespace)
+    end
   end
 
 end
