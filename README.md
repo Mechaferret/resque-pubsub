@@ -12,7 +12,7 @@ Usage / Examples
 A simple class that can publish a message:
 
     class TestPublisher
-      require 'resque-pubsub'
+      include Resque::Plugins::Pubsub::Publisher
     
       def some_method
         self.publish(topic, message)
@@ -23,7 +23,7 @@ A simple class that can publish a message:
 A simple class that subscribes to messages on a particular topic:
 
     class TestSubscriber
-      require 'resque-pubsub'
+      include Resque::Plugins::Pubsub::Subscriber
   
       subscribe 'test_topic'
     
