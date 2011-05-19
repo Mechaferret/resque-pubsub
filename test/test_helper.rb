@@ -7,6 +7,7 @@ require 'test/unit'
 require 'resque'
 require 'active_support'
 require 'active_support/test_case'
+require 'json'
 
 require 'resque-pubsub'
 
