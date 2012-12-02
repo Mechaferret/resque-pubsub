@@ -6,7 +6,6 @@ class TestCustomSubscriber
   class << self
 
     def simple(message)
-      puts "[#{self.to_s}] got test custom topic message: #{message.inspect}"
       @last_message = message
     end
 

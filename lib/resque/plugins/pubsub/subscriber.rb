@@ -8,7 +8,7 @@ module Resque
         end
 
         module ClassMethods
-          
+
           def subscribe(topic, options={})
             @queue = "fanout:#{topic}"
             reader_method = options[:reader_method] || "read_#{topic}_message"
@@ -20,11 +20,10 @@ module Resque
             options[:namespace] = Resque.redis.namespace
             options[:topic] = topic
             options[:class] = self.to_s
-            puts "[#{self.to_s}] subscribing with #{options.inspect}"
             Exchange.redis.sadd(:queues, :subscription_requests)
-            Exchange.redis.rpush("queue:subscription_requests", { :class => 'Resque::Plugins::Pubsub::Exchange', :args => [options] }.to_json)      
+            Exchange.redis.rpush("queue:subscription_requests", { :class => 'Resque::Plugins::Pubsub::Exchange', :args => [options] }.to_json)
           end
-          
+
         end
 
       end

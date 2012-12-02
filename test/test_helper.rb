@@ -30,13 +30,11 @@ at_exit do
   end
 
   pid = `ps -e -o pid,command | grep [r]edis-test`.split(" ")[0]
-  puts 'Killing test redis server...'
   `rm -f #{dir}/dump.rdb`
   Process.kill('KILL', pid.to_i)
   exit exit_code
 end
 
-puts 'Starting redis for testing at localhost:9736...'
 `redis-server #{dir}/redis-test.conf`
 Resque.redis = '127.0.0.1:9736'
 Resque.redis.namespace = 'test_pubsub'
