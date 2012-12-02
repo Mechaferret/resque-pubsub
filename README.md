@@ -13,7 +13,7 @@ A simple class that can publish a message:
 
     class TestPublisher
       include Resque::Plugins::Pubsub::Publisher
-    
+
       def some_method
         self.publish(topic, message)
       end
@@ -24,9 +24,9 @@ A simple class that subscribes to messages on a particular topic:
 
     class TestSubscriber
       include Resque::Plugins::Pubsub::Subscriber
-  
+
       subscribe 'test_topic'
-    
+
       def self.read_test_topic_message(message)
         # Do something with the message
       end
@@ -36,12 +36,12 @@ A simple class that subscribes to messages on a particular topic:
 Customize & Extend
 ==================
 
-The method that the is called when the subscriber is sent a message defaults to read_<topic_name>_message, 
+The method that the is called when the subscriber is sent a message defaults to read_<topic_name>_message,
 but can be customized with the option :reader_method, e.g.,
 
     subscribe 'test_topic', :reader_message => :custom_message_method
-    
-The namespace that pubsub uses in Resque defaults to 'resque:pubsub' but can be configured by setting the constant 
+
+The namespace that pubsub uses in Resque defaults to 'resque:pubsub' but can be configured by setting the constant
 Resque::Plugins::Pubsub::Exchange::PUBSUB_NAMESPACE.
 
 
@@ -67,7 +67,7 @@ then Resque will default to the app namespace but will take an override on names
 
 will run resque jobs against the default pubsub namespace (i.e., will be the pubsub server)
 
-while 
+while
 
     QUEUE=* rake environment resque:work
 
